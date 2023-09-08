@@ -1,13 +1,12 @@
 const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
-const fs = require('fs');
 const PORT = process.env.PORT || 5000;
 const app = express();
 const base = "https://gamerant.com";
 
 const resources = { name: 'gamerant', address: 'https://gamerant.com/', base: 'https://gamerant.com/' };
-const latest_trending=[];
+const newsData = []; // Initialize an empty array to store news data
 
 // Function to check if a news item is older than 6 hours
 function isOlderThan6Hours(time) {
@@ -22,7 +21,7 @@ app.get('/fetch', async (req, res) => {
     const newsResponse = await axios.get(`${req.protocol}://${req.get('host')}/news`);
     const latestNewsData = newsResponse.data;
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).send(latestNewsData);
+    res.status(200).json(newsData); // Return the newsData array as the response
   } catch (err) {
     res.status(500).json({ error: 'Error fetching the latest news data.' });
   }
@@ -34,7 +33,6 @@ app.get('/news', (req, res) => {
     .then((response) => {
       const html = response.data;
       const $ = cheerio.load(html);
-      const newsData = [];
 
       $('div.sentinel-home-list div.display-card.article.small').each((index, element) => {
         const $element = $(element);
@@ -71,17 +69,14 @@ app.get('/news', (req, res) => {
             brandTags,
           };
 
-          newsData.push(newsItem); // Append to the end of the array
+          newsData.push(newsItem); // Append to the end of the newsData array
         }
       });
 
       // Sort the newsData array based on time (latest to oldest)
       newsData.sort((a, b) => new Date(b.time) - new Date(a.time));
 
-      // Write the sorted data back to the file
-      fs.writeFileSync('latest-news.json', JSON.stringify(newsData, null, 2));
-
-      console.log('Latest news data updated in latest-news.json');
+      console.log('Latest news data updated in newsData');
       res.json({ message: 'Latest news data updated successfully.', data: newsData });
     })
     .catch((error) => {
