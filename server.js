@@ -7,6 +7,7 @@ const app = express();
 const base = "https://gamerant.com";
 
 const resources = { name: 'gamerant', address: 'https://gamerant.com/', base: 'https://gamerant.com/' };
+const latest_trending=[];
 
 // Function to check if a news item is older than 6 hours
 function isOlderThan6Hours(time) {
