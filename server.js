@@ -104,7 +104,12 @@ function isOlderThan6Hours(time) {
   sixHoursAgo.setHours(sixHoursAgo.getHours() - 6);
   return new Date(time) < sixHoursAgo;
 }
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+}));
 
 app.get('/fetch', async (req, res) => {
   try {
