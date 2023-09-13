@@ -197,7 +197,9 @@ async function fetchLatestNewsData() {
     newsData = newNewsData;
 
     console.log('Latest news data updated in newsData');
-    return { newsData };
+     res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(newsData); 
+    // return { newsData };
   } catch (error) {
     console.error(error);
     throw error;
