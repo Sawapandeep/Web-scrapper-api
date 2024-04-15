@@ -1,6 +1,6 @@
 
-const express = require('express');
-const axios = require('axios');
+    const express = require('express');
+    const axios = require('axios');
 const cheerio = require('cheerio');
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -16,7 +16,7 @@ function isOlderThan6Hours(time) {
 
 app.use(cors({
   origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  methods: 'GET',
   preflightContinue: false,
   optionsSuccessStatus: 204,
 }));
@@ -95,4 +95,6 @@ app.get('/fetch', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT}`);
+  console.log(`http://127.0.0.1:${PORT}`);
+
 });
