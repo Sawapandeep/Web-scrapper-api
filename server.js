@@ -39,7 +39,9 @@ app.get('/fetch', async (req, res) => {
 
       const newNewsData = [];
 
-      $('div.sentinel-home-list div.display-card.article.small').each((index, element) => {
+      // $('div.sentinel-home-list div.display-card.article.small').each((index, element) => {
+      $('div.sentinel-home-list div.display-card.article.article').each((index, element) => {
+
         const $element = $(element);
         const title = $element.find('h5.display-card-title a').text().trim();
         const titleLink = resources.base + $element.find('h5.display-card-title a').attr('href').trim();
